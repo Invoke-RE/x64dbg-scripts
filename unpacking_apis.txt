@@ -1,0 +1,116 @@
+// Unpacking APIs
+
+// LPVOID VirtualAllocEx(
+//   [in]           HANDLE hProcess,
+//   [in, optional] LPVOID lpAddress,
+//   [in]           SIZE_T dwSize,
+//   [in]           DWORD  flAllocationType,
+//   [in]           DWORD  flProtect
+// );
+bp VirtualAllocEx
+
+// static extern NTSTATUS NtProtectVirtualMemory(
+//   IntPtr ProcessHandle, 
+//   ref IntPtr BaseAddress, 
+//   ref UInt32 NumberOfBytesToProtect,
+//   UInt32 NewAccessProtection,
+//   ref UInt32 OldAccessProtection
+// );
+bp NtProtectVirtualMemory
+
+// static extern NTSTATUS NtProtectVirtualMemory(
+//   IntPtr ProcessHandle,
+//   ref IntPtr BaseAddress,
+//   ref UInt32 NumberOfBytesToProtect,
+//   UInt32 NewAccessProtection,
+//   ref UInt32 OldAccessProtection
+// );
+bp NtUnmapViewOfSection
+
+// NTSYSAPI NTSTATUS ZwMapViewOfSection(
+//   [in]                HANDLE          SectionHandle,
+//   [in]                HANDLE          ProcessHandle,
+//   [in, out]           PVOID           *BaseAddress,
+//   [in]                ULONG_PTR       ZeroBits,
+//   [in]                SIZE_T          CommitSize,
+//   [in, out, optional] PLARGE_INTEGER  SectionOffset,
+//   [in, out]           PSIZE_T         ViewSize,
+//   [in]                SECTION_INHERIT InheritDisposition,
+//   [in]                ULONG           AllocationType,
+//   [in]                ULONG           Win32Protect
+// );
+bp NtMapViewOfSection
+
+// __kernel_entry NTSYSCALLAPI NTSTATUS NtCreateSection(
+//   [out]          PHANDLE            SectionHandle,
+//   [in]           ACCESS_MASK        DesiredAccess,
+//   [in, optional] POBJECT_ATTRIBUTES ObjectAttributes,
+//   [in, optional] PLARGE_INTEGER     MaximumSize,
+//   [in]           ULONG              SectionPageProtection,
+//   [in]           ULONG              AllocationAttributes,
+//   [in, optional] HANDLE             FileHandle
+// );
+bp NtCreateSection
+
+// static extern NTSTATUS NtCreateThreadEx(
+//   ref IntPtr threadHandle,
+//   UInt32 desiredAccess,
+//   IntPtr objectAttributes,
+//   IntPtr processHandle,
+//   IntPtr startAddress,
+//   IntPtr parameter,
+//   bool inCreateSuspended,
+//   Int32 stackZeroBits,
+//   Int32 sizeOfStack,
+//   Int32 maximumStackSize,
+//   IntPtr attributeList
+// );
+bp NtCreateThreadEx
+
+// Injection APIs
+
+bp CreateProcessW
+
+bp WinExec
+
+bp CreateToolhelp32Snapshot
+
+bp Process32First
+
+bp Process32Next
+
+bp OpenProcess
+
+bp WriteProcessMemory
+
+bp CreateRemoteThread
+
+bp CreateThread
+
+bp SetThreadContext
+
+bp ResumeThread
+
+
+// Often there are other payloads that can be written to disk in between stages
+// HANDLE CreateFileW(
+//  [in]           LPCWSTR               lpFileName,
+//  [in]           DWORD                 dwDesiredAccess,
+//  [in]           DWORD                 dwShareMode,
+//  [in, optional] LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+//  [in]           DWORD                 dwCreationDisposition,
+//  [in]           DWORD                 dwFlagsAndAttributes,
+//  [in, optional] HANDLE                hTemplateFile
+// );
+bp CreateFileW
+
+// BOOL WriteFile(
+//   [in]                HANDLE       hFile,
+//   [in]                LPCVOID      lpBuffer,
+//   [in]                DWORD        nNumberOfBytesToWrite,
+//   [out, optional]     LPDWORD      lpNumberOfBytesWritten,
+//   [in, out, optional] LPOVERLAPPED lpOverlapped
+// );
+bp WriteFile
+
+msg "Unpacking, Injection and File Operation API breakpoints set!"
