@@ -69,28 +69,91 @@ bp NtCreateThreadEx
 
 // Injection APIs
 
+// BOOL CreateProcessW(
+//   [in, optional]      LPCWSTR               lpApplicationName,
+//   [in, out, optional] LPWSTR                lpCommandLine,
+//   [in, optional]      LPSECURITY_ATTRIBUTES lpProcessAttributes,
+//   [in, optional]      LPSECURITY_ATTRIBUTES lpThreadAttributes,
+//   [in]                BOOL                  bInheritHandles,
+//   [in]                DWORD                 dwCreationFlags,
+//   [in, optional]      LPVOID                lpEnvironment,
+//   [in, optional]      LPCWSTR               lpCurrentDirectory,
+//   [in]                LPSTARTUPINFOW        lpStartupInfo,
+//   [out]               LPPROCESS_INFORMATION lpProcessInformation
+// );
 bp CreateProcessW
 
+// UINT WinExec(
+//  [in] LPCSTR lpCmdLine,
+//  [in] UINT   uCmdShow
+// );
 bp WinExec
 
+// HANDLE CreateToolhelp32Snapshot(
+//   [in] DWORD dwFlags,
+//   [in] DWORD th32ProcessID
+// );
 bp CreateToolhelp32Snapshot
 
+// BOOL Process32First(
+//   [in]      HANDLE           hSnapshot,
+//   [in, out] LPPROCESSENTRY32 lppe
+// );
 bp Process32First
 
+// BOOL Process32Next(
+//   [in]  HANDLE           hSnapshot,
+//   [out] LPPROCESSENTRY32 lppe
+// );
 bp Process32Next
 
+// HANDLE OpenProcess(
+//   [in] DWORD dwDesiredAccess,
+//   [in] BOOL  bInheritHandle,
+//   [in] DWORD dwProcessId
+// );
 bp OpenProcess
 
+// BOOL WriteProcessMemory(
+//   [in]  HANDLE  hProcess,
+//   [in]  LPVOID  lpBaseAddress,
+//   [in]  LPCVOID lpBuffer,
+//   [in]  SIZE_T  nSize,
+//   [out] SIZE_T  *lpNumberOfBytesWritten
+// );
 bp WriteProcessMemory
 
+// HANDLE CreateRemoteThread(
+//   [in]  HANDLE                 hProcess,
+//   [in]  LPSECURITY_ATTRIBUTES  lpThreadAttributes,
+//   [in]  SIZE_T                 dwStackSize,
+//   [in]  LPTHREAD_START_ROUTINE lpStartAddress,
+//   [in]  LPVOID                 lpParameter,
+//   [in]  DWORD                  dwCreationFlags,
+//   [out] LPDWORD                lpThreadId
+// );
 bp CreateRemoteThread
 
+// HANDLE CreateThread(
+//   [in, optional]  LPSECURITY_ATTRIBUTES   lpThreadAttributes,
+//   [in]            SIZE_T                  dwStackSize,
+//   [in]            LPTHREAD_START_ROUTINE  lpStartAddress,
+//   [in, optional]  __drv_aliasesMem LPVOID lpParameter,
+//   [in]            DWORD                   dwCreationFlags,
+//   [out, optional] LPDWORD                 lpThreadId
+// );
 bp CreateThread
 
+// BOOL SetThreadContext(
+//  [in] HANDLE        hThread,
+//  [in] const CONTEXT *lpContext
+// );
 bp SetThreadContext
 
+// DWORD ResumeThread(
+//   [in] HANDLE hThread
+// );
 bp ResumeThread
-
 
 // Often there are other payloads that can be written to disk in between stages
 // HANDLE CreateFileW(
