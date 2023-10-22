@@ -1,14 +1,5 @@
 // Unpacking APIs
 
-// LPVOID VirtualAllocEx(
-//   [in]           HANDLE hProcess,
-//   [in, optional] LPVOID lpAddress,
-//   [in]           SIZE_T dwSize,
-//   [in]           DWORD  flAllocationType,
-//   [in]           DWORD  flProtect
-// );
-bp VirtualAllocEx
-
 // static extern NTSTATUS NtProtectVirtualMemory(
 //   IntPtr ProcessHandle, 
 //   ref IntPtr BaseAddress, 
@@ -16,7 +7,8 @@ bp VirtualAllocEx
 //   UInt32 NewAccessProtection,
 //   ref UInt32 OldAccessProtection
 // );
-bp NtProtectVirtualMemory
+// This can be very noisy during normal operation. Uncomment when needed.
+//bp NtProtectVirtualMemory
 
 // static extern NTSTATUS NtProtectVirtualMemory(
 //   IntPtr ProcessHandle,
@@ -39,7 +31,8 @@ bp NtUnmapViewOfSection
 //   [in]                ULONG           AllocationType,
 //   [in]                ULONG           Win32Protect
 // );
-bp NtMapViewOfSection
+// This can be very noisy during normal operation. Uncomment when needed.
+//bp NtMapViewOfSection
 
 // __kernel_entry NTSYSCALLAPI NTSTATUS NtCreateSection(
 //   [out]          PHANDLE            SectionHandle,
@@ -50,7 +43,8 @@ bp NtMapViewOfSection
 //   [in]           ULONG              AllocationAttributes,
 //   [in, optional] HANDLE             FileHandle
 // );
-bp NtCreateSection
+// This can be very noisy during normal operation. Uncomment when needed.
+//bp NtCreateSection
 
 // static extern NTSTATUS NtCreateThreadEx(
 //   ref IntPtr threadHandle,
@@ -67,6 +61,54 @@ bp NtCreateSection
 // );
 bp NtCreateThreadEx
 
+// NtCreateThread(
+//  OUT PHANDLE             ThreadHandle,
+//  IN ACCESS_MASK          DesiredAccess,
+//  IN POBJECT_ATTRIBUTES   ObjectAttributes OPTIONAL,
+//  IN HANDLE               ProcessHandle,
+//  OUT PCLIENT_ID          ClientId,
+//  IN PCONTEXT             ThreadContext,
+//  IN PINITIAL_TEB         InitialTeb,
+//  IN BOOLEAN              CreateSuspended
+//);
+bp NtCreateThread
+
+//Higher level APIs from Kernel32
+
+// LPVOID VirtualAllocEx(
+//   [in]           HANDLE hProcess,
+//   [in, optional] LPVOID lpAddress,
+//   [in]           SIZE_T dwSize,
+//   [in]           DWORD  flAllocationType,
+//   [in]           DWORD  flProtect
+// );
+bp VirtualAllocEx
+
+// LPVOID VirtualAlloc(
+//   [in, optional] LPVOID lpAddress,
+//   [in]           SIZE_T dwSize,
+//   [in]           DWORD  flAllocationType,
+//   [in]           DWORD  flProtect
+// );
+bp VirtualAlloc
+
+// BOOL VirtualProtect(
+//   [in]  LPVOID lpAddress,
+//   [in]  SIZE_T dwSize,
+//   [in]  DWORD  flNewProtect,
+//   [out] PDWORD lpflOldProtect
+// );
+bp VirtualProtect
+
+// BOOL VirtualProtectEx(
+//  [in]  HANDLE hProcess,
+//  [in]  LPVOID lpAddress,
+//  [in]  SIZE_T dwSize,
+//  [in]  DWORD  flNewProtect,
+//  [out] PDWORD lpflOldProtect
+//);
+bp VirtualProtectEx
+
 // Injection APIs
 
 // BOOL CreateProcessW(
@@ -82,6 +124,20 @@ bp NtCreateThreadEx
 //   [out]               LPPROCESS_INFORMATION lpProcessInformation
 // );
 bp CreateProcessW
+
+//BOOL CreateProcessA(
+//  [in, optional]      LPCSTR                lpApplicationName,
+//  [in, out, optional] LPSTR                 lpCommandLine,
+//  [in, optional]      LPSECURITY_ATTRIBUTES lpProcessAttributes,
+//  [in, optional]      LPSECURITY_ATTRIBUTES lpThreadAttributes,
+//  [in]                BOOL                  bInheritHandles,
+//  [in]                DWORD                 dwCreationFlags,
+//  [in, optional]      LPVOID                lpEnvironment,
+//  [in, optional]      LPCSTR                lpCurrentDirectory,
+//  [in]                LPSTARTUPINFOA        lpStartupInfo,
+//  [out]               LPPROCESS_INFORMATION lpProcessInformation
+//);
+bp CreateProcessA
 
 // UINT WinExec(
 //  [in] LPCSTR lpCmdLine,
@@ -123,6 +179,15 @@ bp OpenProcess
 // );
 bp WriteProcessMemory
 
+// BOOL ReadProcessMemory(
+//  [in]  HANDLE  hProcess,
+//  [in]  LPCVOID lpBaseAddress,
+//  [out] LPVOID  lpBuffer,
+//  [in]  SIZE_T  nSize,
+//  [out] SIZE_T  *lpNumberOfBytesRead
+// );
+bp ReadProcessMemory
+
 // HANDLE CreateRemoteThread(
 //   [in]  HANDLE                 hProcess,
 //   [in]  LPSECURITY_ATTRIBUTES  lpThreadAttributes,
@@ -156,6 +221,17 @@ bp SetThreadContext
 bp ResumeThread
 
 // Often there are other payloads that can be written to disk in between stages
+// HANDLE CreateFileA(
+//  [in]           LPCSTR                lpFileName,
+//  [in]           DWORD                 dwDesiredAccess,
+//  [in]           DWORD                 dwShareMode,
+//  [in, optional] LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+//  [in]           DWORD                 dwCreationDisposition,
+//  [in]           DWORD                 dwFlagsAndAttributes,
+//  [in, optional] HANDLE                hTemplateFile
+// );
+bp CreateFileA
+
 // HANDLE CreateFileW(
 //  [in]           LPCWSTR               lpFileName,
 //  [in]           DWORD                 dwDesiredAccess,
