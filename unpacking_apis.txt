@@ -73,6 +73,20 @@ bp NtCreateThreadEx
 //);
 bp NtCreateThread
 
+// NTSTATUS NtAllocateVirtualMemory(
+//  [in]      HANDLE    ProcessHandle,
+//  [in, out] PVOID     *BaseAddress,
+//  [in]      ULONG_PTR ZeroBits,
+//  [in, out] PSIZE_T   RegionSize,
+//  [in]      ULONG     AllocationType,
+//  [in]      ULONG     Protect
+//);
+// This can be very noisy during normal operation, however,
+// all lower level memory allocation APIs will eventually call this
+// so it can provide great insight into what memory allocation APIs
+// are being used by the sample. 
+//bp NtAllocateVirtualMemory
+
 //Higher level APIs from Kernel32
 
 // LPVOID VirtualAllocEx(
@@ -91,6 +105,8 @@ bp VirtualAllocEx
 //   [in]           DWORD  flProtect
 // );
 bp VirtualAlloc
+
+
 
 // BOOL VirtualProtect(
 //   [in]  LPVOID lpAddress,
@@ -214,6 +230,11 @@ bp CreateThread
 //  [in] const CONTEXT *lpContext
 // );
 bp SetThreadContext
+
+// NTSYSAPI NTSTATUS NTAPI NtSetContextThread(
+//  IN HANDLE               ThreadHandle,
+//  IN PCONTEXT             Context );
+//bp ZwSetThreadContext
 
 // DWORD ResumeThread(
 //   [in] HANDLE hThread
